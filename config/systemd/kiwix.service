@@ -1,0 +1,16 @@
+# /etc/systemd/system/kiwix.service
+# Serves every .zim file on the drive. setup.sh fills in __USER__.
+[Unit]
+Description=Kiwix offline library
+After=network-online.target local-fs.target
+RequiresMountsFor=/mnt/wiki
+
+[Service]
+ExecStart=/bin/sh -c 'exec /usr/bin/kiwix-serve --port 80 /mnt/wiki/*.zim'
+AmbientCapabilities=CAP_NET_BIND_SERVICE
+User=__USER__
+Restart=always
+RestartSec=5
+
+[Install]
+WantedBy=multi-user.target
